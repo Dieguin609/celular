@@ -240,58 +240,72 @@
     </div>
   </div>
 
-  <script>
-    function updateTime() {
-      const now = new Date();
-      const h = now.getHours().toString().padStart(2, '0');
-      const m = now.getMinutes().toString().padStart(2, '0');
-      const time = `${h}:${m}`;
-      document.getElementById('lock-time').textContent = time;
-      document.getElementById('home-clock-mini').textContent = time;
-      document.getElementById('home-clock').querySelector('.top').textContent = h;
-      document.getElementById('home-clock').querySelector('.bottom').textContent = m;
+ <!-- substitua apenas este trecho no seu código existente -->
+<script>
+  function updateTime() {
+    const now = new Date();
+    const h = now.getHours().toString().padStart(2, '0');
+    const m = now.getMinutes().toString().padStart(2, '0');
+    const time = `${h}:${m}`;
+    document.getElementById('lock-time').textContent = time;
+    document.getElementById('home-clock-mini').textContent = time;
+    document.getElementById('home-clock').querySelector('.top').textContent = h;
+    document.getElementById('home-clock').querySelector('.bottom').textContent = m;
 
-      const days = ['domingo', 'segunda-feira', 'terça-feira', 'quarta-feira', 'quinta-feira', 'sexta-feira', 'sábado'];
-      const months = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
-      const dname = days[now.getDay()];
-      const dnum = now.getDate();
-      const month = months[now.getMonth()];
-      document.getElementById('lock-date').textContent = `${dname}, ${dnum} de ${month}`;
-    }
+    const days = ['domingo', 'segunda-feira', 'terça-feira', 'quarta-feira', 'quinta-feira', 'sexta-feira', 'sábado'];
+    const months = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+    const dname = days[now.getDay()];
+    const dnum = now.getDate();
+    const month = months[now.getMonth()];
+    document.getElementById('lock-date').textContent = `${dname}, ${dnum} de ${month}`;
+  }
 
-    setInterval(updateTime, 10000);
-    updateTime();
+  setInterval(updateTime, 10000);
+  updateTime();
 
-    document.getElementById('lockscreen').addEventListener('click', () => {
-      document.getElementById('lockscreen').style.display = 'none';
-      document.getElementById('homescreen').style.display = 'flex';
-    });
+  document.getElementById('lockscreen').addEventListener('click', () => {
+    document.getElementById('lockscreen').style.display = 'none';
+    document.getElementById('homescreen').style.display = 'flex';
+  });
 
-    function abrirApp(app) {
-      const appWindow = document.getElementById('appWindow');
-      const appContent = document.getElementById('appContent');
-      const appTitle = document.getElementById('appTitle');
-      appContent.innerHTML = '';
+  function abrirApp(app) {
+    const appWindow = document.getElementById('appWindow');
+    const appContent = document.getElementById('appContent');
+    const appTitle = document.getElementById('appTitle');
+    appContent.innerHTML = '';
 
-      const apps = {
-        youtube: { title: 'YouTube', url: 'https://m.youtube.com' },
-        instagram: { title: 'Instagram', url: 'https://www.instagram.com' },
-        whatsapp: { title: 'WhatsApp Web', url: 'https://web.whatsapp.com' },
-        settings: { title: 'Configurações', url: 'https://example.com/configuracoes.html' }
-      };
-
-      if (apps[app]) {
-        appTitle.textContent = apps[app].title;
-        appContent.innerHTML = `<iframe src="${apps[app].url}" allowfullscreen></iframe>`;
-        appWindow.style.display = 'flex';
-      } else {
-        alert(`Abrir ${app.toUpperCase()} – Função personalizada em breve.`);
+    const apps = {
+      youtube: {
+        title: 'YouTube',
+        url: 'https://www.youtube.com/embed?autoplay=1'
+      },
+      instagram: {
+        title: 'Instagram',
+        url: 'https://www.instagram.com'
+      },
+      whatsapp: {
+        title: 'WhatsApp Web',
+        url: 'https://web.whatsapp.com'
+      },
+      settings: {
+        title: 'Configurações',
+        url: 'https://example.com/configuracoes.html'
       }
-    }
+    };
 
-    function fecharApp() {
-      document.getElementById('appWindow').style.display = 'none';
+    if (apps[app]) {
+      appTitle.textContent = apps[app].title;
+      appContent.innerHTML = `<iframe src="${apps[app].url}" allowfullscreen></iframe>`;
+      appWindow.style.display = 'flex';
+    } else {
+      alert(`Abrir ${app.toUpperCase()} – Função personalizada em breve.`);
     }
-  </script>
+  }
+
+  function fecharApp() {
+    document.getElementById('appWindow').style.display = 'none';
+  }
+</script>
+
 </body>
 </html>
