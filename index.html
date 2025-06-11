@@ -9,7 +9,7 @@
       margin: 0;
       background: #ffffff;
       height: 100vh;
-      font-family: 'Segoe UI', sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       overflow: hidden;
       display: flex;
       justify-content: flex-end;
@@ -28,6 +28,7 @@
       display: flex;
       flex-direction: column;
       transform: scale(1);
+      color: #000;
     }
 
     @media screen and (max-height: 700px) {
@@ -110,6 +111,76 @@
       display: flex;
       align-items: center;
       font-size: 14px;
+      box-sizing: border-box;
+      border: 1px solid #ddd;
+    }
+
+    .search-bar input {
+      flex-grow: 1;
+      border: none;
+      outline: none;
+      font-size: 14px;
+    }
+
+    .search-bar button {
+      background-color: #cc0000;
+      border: none;
+      color: white;
+      padding: 8px 12px;
+      border-radius: 4px;
+      margin-left: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .search-bar button:hover {
+      background-color: #e60000;
+    }
+
+    .youtube-recommended {
+      padding: 10px 14px;
+      background: #f9f9f9;
+      flex-grow: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .video-item {
+      display: flex;
+      gap: 12px;
+      cursor: pointer;
+      align-items: center;
+    }
+
+    .video-thumb {
+      width: 120px;
+      height: 68px;
+      flex-shrink: 0;
+      border-radius: 8px;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .video-info {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      font-size: 14px;
+      color: #222;
+    }
+
+    .video-title {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .video-channel {
+      font-size: 12px;
+      color: #666;
     }
 
     .apps-grid {
@@ -128,6 +199,7 @@
       font-size: 11px;
       color: white;
       cursor: pointer;
+      user-select: none;
     }
 
     .app-icon img {
@@ -156,33 +228,53 @@
       flex-direction: column;
       background: white;
       z-index: 10;
+      color: #000;
     }
 
     .app-bar {
-      background: #000;
-      color: white;
-      padding: 10px;
+      background: #fff;
+      color: #000;
+      padding: 12px 16px;
       text-align: center;
-      font-weight: bold;
+      font-weight: 600;
+      font-size: 18px;
+      border-bottom: 1px solid #ddd;
       position: relative;
+      box-shadow: 0 1px 4px rgb(0 0 0 / 0.1);
     }
 
     .close-btn {
       position: absolute;
-      top: 10px;
-      right: 14px;
-      font-size: 20px;
+      top: 12px;
+      right: 16px;
+      font-size: 22px;
       cursor: pointer;
-      color: white;
+      color: #555;
+      user-select: none;
+      transition: color 0.3s ease;
+    }
+    .close-btn:hover {
+      color: #cc0000;
     }
 
     .app-content {
       flex: 1;
       width: 100%;
-      height: 100%;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
     }
 
-    .app-content iframe {
+    /* YouTube Player */
+    #youtube-player {
+      flex-grow: 1;
+      background: black;
+      border-radius: 0 0 12px 12px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    #youtube-player iframe {
       width: 100%;
       height: 100%;
       border: none;
@@ -211,101 +303,199 @@
         </div>
         <div class="search-bar">🔍 Pesquisar no Google</div>
         <div class="apps-grid">
-          <div class="app-icon" onclick="abrirApp('whatsapp')"><img src="whatsapp.png">WhatsApp</div>
-          <div class="app-icon" onclick="abrirApp('instagram')"><img src="instagram.png">Instagram</div>
-          <div class="app-icon" onclick="abrirApp('youtube')"><img src="youtube.png">YouTube</div>
-          <div class="app-icon" onclick="abrirApp('settings')"><img src="settings.png">Config</div>
-          <div class="app-icon" onclick="abrirApp('clock')"><img src="clock.png">Relógio</div>
-          <div class="app-icon" onclick="abrirApp('gallery')"><img src="gallery.png">Galeria</div>
-          <div class="app-icon" onclick="abrirApp('music')"><img src="music.png">Músicas</div>
-          <div class="app-icon" onclick="abrirApp('calendar')"><img src="calendar.png">Calendário</div>
+          <div class="app-icon" onclick="abrirApp('whatsapp')"><img src="whatsapp.png" alt="WhatsApp">WhatsApp</div>
+          <div class="app-icon" onclick="abrirApp('instagram')"><img src="instagram.png" alt="Instagram">Instagram</div>
+          <div class="app-icon" onclick="abrirApp('youtube')"><img src="youtube.png" alt="YouTube">YouTube</div>
+          <div class="app-icon" onclick="abrirApp('settings')"><img src="settings.png" alt="Configurações">Config</div>
+          <div class="app-icon" onclick="abrirApp('clock')"><img src="clock.png" alt="Relógio">Relógio</div>
+          <div class="app-icon" onclick="abrirApp('gallery')"><img src="gallery.png" alt="Galeria">Galeria</div>
+          <div class="app-icon" onclick="abrirApp('music')"><img src="music.png" alt="Música">Música</div>
+          <div class="app-icon" onclick="abrirApp('browser')"><img src="browser.png" alt="Navegador">Navegador</div>
         </div>
       </div>
       <div class="dock">
-        <div class="dock-icon" onclick="abrirApp('phone')"><img src="phone.png"></div>
-        <div class="dock-icon" onclick="abrirApp('messages')"><img src="messages.png"></div>
-        <div class="dock-icon" onclick="abrirApp('browser')"><img src="browser.png"></div>
+        <div class="dock-icon" onclick="abrirApp('phone')"><img src="phone.png" alt="Telefone"></div>
+        <div class="dock-icon" onclick="abrirApp('messages')"><img src="messages.png" alt="Mensagens"></div>
+        <div class="dock-icon" onclick="abrirApp('camera')"><img src="camera.png" alt="Câmera"></div>
       </div>
     </div>
 
-    <!-- App aberto -->
-    <div id="appWindow" class="app-window">
+    <!-- Janela do app YouTube -->
+    <div id="youtube-app" class="app-window">
       <div class="app-bar">
-        <span id="appTitle">App</span>
-        <span class="close-btn" onclick="fecharApp()">✖</span>
+        YouTube
+        <span class="close-btn" onclick="fecharApp('youtube')">&times;</span>
       </div>
-      <div class="app-content" id="appContent">
-        <!-- Conteúdo dinâmico com iframe -->
+      <div class="app-content">
+        <div style="padding:10px;">
+          <input type="text" id="yt-search-input" placeholder="Pesquisar no YouTube" style="width: 100%; padding: 8px; font-size: 14px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box;">
+          <button id="yt-search-btn" style="margin-top: 8px; width: 100%; padding: 10px; background-color: #cc0000; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer;">Buscar</button>
+        </div>
+        <div id="youtube-player" style="flex-grow:1; margin-top: 10px;">
+          <!-- O vídeo embedado aparecerá aqui -->
+        </div>
+        <div id="youtube-videos-list" style="overflow-y: auto; max-height: 180px; background: #fafafa; padding: 10px;">
+          <!-- Lista de vídeos recomendados aparecerá aqui -->
+        </div>
       </div>
     </div>
   </div>
 
- <!-- substitua apenas este trecho no seu código existente -->
-<script>
-  function updateTime() {
-    const now = new Date();
-    const h = now.getHours().toString().padStart(2, '0');
-    const m = now.getMinutes().toString().padStart(2, '0');
-    const time = `${h}:${m}`;
-    document.getElementById('lock-time').textContent = time;
-    document.getElementById('home-clock-mini').textContent = time;
-    document.getElementById('home-clock').querySelector('.top').textContent = h;
-    document.getElementById('home-clock').querySelector('.bottom').textContent = m;
+  <script>
+    // Função para atualizar horário e data da tela de bloqueio
+    function atualizarLockscreen() {
+      const now = new Date();
+      const h = now.getHours().toString().padStart(2, '0');
+      const m = now.getMinutes().toString().padStart(2, '0');
+      const days = ['domingo', 'segunda-feira', 'terça-feira', 'quarta-feira', 'quinta-feira', 'sexta-feira', 'sábado'];
+      const months = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
 
-    const days = ['domingo', 'segunda-feira', 'terça-feira', 'quarta-feira', 'quinta-feira', 'sexta-feira', 'sábado'];
-    const months = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
-    const dname = days[now.getDay()];
-    const dnum = now.getDate();
-    const month = months[now.getMonth()];
-    document.getElementById('lock-date').textContent = `${dname}, ${dnum} de ${month}`;
-  }
-
-  setInterval(updateTime, 10000);
-  updateTime();
-
-  document.getElementById('lockscreen').addEventListener('click', () => {
-    document.getElementById('lockscreen').style.display = 'none';
-    document.getElementById('homescreen').style.display = 'flex';
-  });
-
-  function abrirApp(app) {
-    const appWindow = document.getElementById('appWindow');
-    const appContent = document.getElementById('appContent');
-    const appTitle = document.getElementById('appTitle');
-    appContent.innerHTML = '';
-
-    const apps = {
-      youtube: {
-        title: 'YouTube',
-        url: 'https://www.youtube.com/embed?autoplay=1'
-      },
-      instagram: {
-        title: 'Instagram',
-        url: 'https://www.instagram.com'
-      },
-      whatsapp: {
-        title: 'WhatsApp Web',
-        url: 'https://web.whatsapp.com'
-      },
-      settings: {
-        title: 'Configurações',
-        url: 'https://example.com/configuracoes.html'
-      }
-    };
-
-    if (apps[app]) {
-      appTitle.textContent = apps[app].title;
-      appContent.innerHTML = `<iframe src="${apps[app].url}" allowfullscreen></iframe>`;
-      appWindow.style.display = 'flex';
-    } else {
-      alert(`Abrir ${app.toUpperCase()} – Função personalizada em breve.`);
+      document.getElementById('lock-time').textContent = `${h}:${m}`;
+      document.getElementById('lock-date').textContent = `${days[now.getDay()]}, ${now.getDate()} de ${months[now.getMonth()]}`;
     }
-  }
 
-  function fecharApp() {
-    document.getElementById('appWindow').style.display = 'none';
-  }
-</script>
+    // Atualiza a tela inicial relógio
+    function atualizarHomeClock() {
+      const now = new Date();
+      const h = now.getHours().toString().padStart(2, '0');
+      const m = now.getMinutes().toString().padStart(2, '0');
+      document.getElementById('home-clock-mini').textContent = `${h}:${m}`;
+      document.querySelector('#home-clock .top').textContent = h;
+      document.querySelector('#home-clock .bottom').textContent = m;
+    }
 
+    // Inicialização da atualização do relógio
+    atualizarLockscreen();
+    atualizarHomeClock();
+    setInterval(() => {
+      atualizarLockscreen();
+      atualizarHomeClock();
+    }, 60000);
+
+    // Transição da tela de bloqueio para a tela inicial
+    const lockscreen = document.getElementById('lockscreen');
+    const homescreen = document.getElementById('homescreen');
+    const youtubeApp = document.getElementById('youtube-app');
+
+    lockscreen.addEventListener('click', () => {
+      lockscreen.style.display = 'none';
+      homescreen.style.display = 'flex';
+    });
+
+    // Função para abrir apps - simplificado
+    function abrirApp(appName) {
+      if (appName === 'youtube') {
+        homescreen.style.display = 'none';
+        youtubeApp.style.display = 'flex';
+        carregarVideosPadrao();
+      } else {
+        alert(`App "${appName}" ainda não está implementado.`);
+      }
+    }
+
+    // Função para fechar apps
+    function fecharApp(appName) {
+      if (appName === 'youtube') {
+        youtubeApp.style.display = 'none';
+        homescreen.style.display = 'flex';
+        limparYoutube();
+      }
+    }
+
+    // Função para limpar conteúdo do YouTube app
+    function limparYoutube() {
+      document.getElementById('youtube-player').innerHTML = '';
+      document.getElementById('youtube-videos-list').innerHTML = '';
+      document.getElementById('yt-search-input').value = '';
+    }
+
+    // Dados de vídeos para demo - substituir por API real se quiser
+    const videosDemo = [
+      {
+        id: 'dQw4w9WgXcQ',
+        title: 'Rick Astley - Never Gonna Give You Up',
+        channel: 'Rick Astley',
+        thumb: 'https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg'
+      },
+      {
+        id: 'kxopViU98Xo',
+        title: 'Nyan Cat [original]',
+        channel: 'Nyan Cat',
+        thumb: 'https://img.youtube.com/vi/kxopViU98Xo/hqdefault.jpg'
+      },
+      {
+        id: '3JZ_D3ELwOQ',
+        title: 'The Weeknd - Blinding Lights',
+        channel: 'The Weeknd',
+        thumb: 'https://img.youtube.com/vi/3JZ_D3ELwOQ/hqdefault.jpg'
+      }
+    ];
+
+    // Exibe vídeos recomendados
+    function carregarVideosPadrao() {
+      const list = document.getElementById('youtube-videos-list');
+      list.innerHTML = '';
+      videosDemo.forEach(video => {
+        const el = document.createElement('div');
+        el.className = 'video-item';
+        el.innerHTML = `
+          <div class="video-thumb" style="background-image:url('${video.thumb}')"></div>
+          <div class="video-info">
+            <div class="video-title">${video.title}</div>
+            <div class="video-channel">${video.channel}</div>
+          </div>
+        `;
+        el.onclick = () => {
+          carregarVideo(video.id);
+        };
+        list.appendChild(el);
+      });
+      // Carrega o primeiro vídeo automaticamente
+      carregarVideo(videosDemo[0].id);
+    }
+
+    // Função para carregar vídeo no player
+    function carregarVideo(videoId) {
+      const player = document.getElementById('youtube-player');
+      player.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+    }
+
+    // Pesquisa fake - substitua pela API real do YouTube se desejar
+    document.getElementById('yt-search-btn').addEventListener('click', () => {
+      const query = document.getElementById('yt-search-input').value.trim();
+      if (!query) return alert('Digite algo para buscar no YouTube.');
+
+      // Simulação de pesquisa filtrando os vídeosDemo
+      const resultados = videosDemo.filter(v => v.title.toLowerCase().includes(query.toLowerCase()));
+
+      const list = document.getElementById('youtube-videos-list');
+      list.innerHTML = '';
+
+      if (resultados.length === 0) {
+        list.innerHTML = '<p style="text-align:center; color:#888;">Nenhum vídeo encontrado.</p>';
+        document.getElementById('youtube-player').innerHTML = '';
+        return;
+      }
+
+      resultados.forEach(video => {
+        const el = document.createElement('div');
+        el.className = 'video-item';
+        el.innerHTML = `
+          <div class="video-thumb" style="background-image:url('${video.thumb}')"></div>
+          <div class="video-info">
+            <div class="video-title">${video.title}</div>
+            <div class="video-channel">${video.channel}</div>
+          </div>
+        `;
+        el.onclick = () => {
+          carregarVideo(video.id);
+        };
+        list.appendChild(el);
+      });
+
+      carregarVideo(resultados[0].id);
+    });
+
+  </script>
 </body>
 </html>
