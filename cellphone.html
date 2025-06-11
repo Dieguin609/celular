@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Celular RP S23</title>
+  <style>
+    body {
+      margin: 0;
+      background: #ffffff;
+      height: 100vh;
+      font-family: 'Segoe UI', sans-serif;
+      overflow: hidden;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding-right: 40px;
+    }
+
+    .phone {
+      width: 340px;
+      height: 680px;
+      background: #000;
+      border-radius: 40px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      transform: scale(1);
+    }
+
+    @media screen and (max-height: 700px) {
+      .phone {
+        transform: scale(0.9);
+      }
+    }
+
+    .lockscreen, .homescreen, .app-window {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      transition: opacity 0.5s;
+    }
+
+    .lockscreen {
+      background: url('lock.png') center/cover no-repeat;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      cursor: pointer;
+    }
+
+    .lock-time {
+      font-size: 48px;
+      font-weight: bold;
+    }
+
+    .lock-date {
+      font-size: 18px;
+      margin-top: 4px;
+    }
+
+    .swipe-text {
+      font-size: 14px;
+      opacity: 0.8;
+      position: absolute;
+      bottom: 20px;
+      text-align: center;
+    }
+
+    .homescreen {
+      background: url('inicial.png') center/cover no-repeat;
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      color: white;
+    }
+
+    .status-bar {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 12px;
+      font-size: 12px;
+      background: rgba(0,0,0,0.3);
+    }
+
+    .home-clock {
+      margin-top: 15px;
+      text-align: center;
+      line-height: 1;
+      font-weight: bold;
+    }
+
+    .home-clock .top,
+    .home-clock .bottom {
+      font-size: 42px;
+      letter-spacing: 2px;
+    }
+
+    .search-bar {
+      margin: 12px auto;
+      background: white;
+      color: black;
+      width: 90%;
+      padding: 8px 14px;
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+    }
+
+    .apps-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      padding: 10px;
+      width: 100%;
+      justify-items: center;
+    }
+
+    .app-icon {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 11px;
+      color: white;
+      cursor: pointer;
+    }
+
+    .app-icon img {
+      width: 50px;
+      height: 50px;
+      margin-bottom: 4px;
+      border-radius: 15px;
+    }
+
+    .dock {
+      background: rgba(255,255,255,0.1);
+      padding: 6px 20px;
+      border-radius: 20px 20px 0 0;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .dock-icon img {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+    }
+
+    .app-window {
+      display: none;
+      flex-direction: column;
+      background: white;
+      z-index: 10;
+    }
+
+    .app-bar {
+      background: #000;
+      color: white;
+      padding: 10px;
+      text-align: center;
+      font-weight: bold;
+      position: relative;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 14px;
+      font-size: 20px;
+      cursor: pointer;
+      color: white;
+    }
+
+    .app-content {
+      flex: 1;
+      width: 100%;
+      height: 100%;
+    }
+
+    .app-content iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="phone">
+    <!-- Tela de bloqueio -->
+    <div id="lockscreen" class="lockscreen" tabindex="0">
+      <div class="lock-time" id="lock-time">00:00</div>
+      <div class="lock-date" id="lock-date">terça-feira, 11 de junho</div>
+      <div class="swipe-text">⬆ Deslize para cima</div>
+    </div>
+
+    <!-- Tela inicial -->
+    <div id="homescreen" class="homescreen">
+      <div>
+        <div class="status-bar">
+          <span id="home-clock-mini">00:00</span>
+          <span>📶 🔋75%</span>
+        </div>
+        <div class="home-clock" id="home-clock">
+          <div class="top">12</div>
+          <div class="bottom">45</div>
+        </div>
+        <div class="search-bar">🔍 Pesquisar no Google</div>
+        <div class="apps-grid">
+          <div class="app-icon" onclick="abrirApp('whatsapp')"><img src="whatsapp.png">WhatsApp</div>
+          <div class="app-icon" onclick="abrirApp('instagram')"><img src="instagram.png">Instagram</div>
+          <div class="app-icon" onclick="abrirApp('youtube')"><img src="youtube.png">YouTube</div>
+          <div class="app-icon" onclick="abrirApp('settings')"><img src="settings.png">Config</div>
+          <div class="app-icon" onclick="abrirApp('clock')"><img src="clock.png">Relógio</div>
+          <div class="app-icon" onclick="abrirApp('gallery')"><img src="gallery.png">Galeria</div>
+          <div class="app-icon" onclick="abrirApp('music')"><img src="music.png">Músicas</div>
+          <div class="app-icon" onclick="abrirApp('calendar')"><img src="calendar.png">Calendário</div>
+        </div>
+      </div>
+      <div class="dock">
+        <div class="dock-icon" onclick="abrirApp('phone')"><img src="phone.png"></div>
+        <div class="dock-icon" onclick="abrirApp('messages')"><img src="messages.png"></div>
+        <div class="dock-icon" onclick="abrirApp('browser')"><img src="browser.png"></div>
+      </div>
+    </div>
+
+    <!-- App aberto -->
+    <div id="appWindow" class="app-window">
+      <div class="app-bar">
+        <span id="appTitle">App</span>
+        <span class="close-btn" onclick="fecharApp()">✖</span>
+      </div>
+      <div class="app-content" id="appContent">
+        <!-- Conteúdo dinâmico com iframe -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function updateTime() {
+      const now = new Date();
+      const h = now.getHours().toString().padStart(2, '0');
+      const m = now.getMinutes().toString().padStart(2, '0');
+      const time = `${h}:${m}`;
+      document.getElementById('lock-time').textContent = time;
+      document.getElementById('home-clock-mini').textContent = time;
+      document.getElementById('home-clock').querySelector('.top').textContent = h;
+      document.getElementById('home-clock').querySelector('.bottom').textContent = m;
+
+      const days = ['domingo', 'segunda-feira', 'terça-feira', 'quarta-feira', 'quinta-feira', 'sexta-feira', 'sábado'];
+      const months = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+      const dname = days[now.getDay()];
+      const dnum = now.getDate();
+      const month = months[now.getMonth()];
+      document.getElementById('lock-date').textContent = `${dname}, ${dnum} de ${month}`;
+    }
+
+    setInterval(updateTime, 10000);
+    updateTime();
+
+    document.getElementById('lockscreen').addEventListener('click', () => {
+      document.getElementById('lockscreen').style.display = 'none';
+      document.getElementById('homescreen').style.display = 'flex';
+    });
+
+    function abrirApp(app) {
+      const appWindow = document.getElementById('appWindow');
+      const appContent = document.getElementById('appContent');
+      const appTitle = document.getElementById('appTitle');
+      appContent.innerHTML = '';
+
+      const apps = {
+        youtube: { title: 'YouTube', url: 'https://m.youtube.com' },
+        instagram: { title: 'Instagram', url: 'https://www.instagram.com' },
+        whatsapp: { title: 'WhatsApp Web', url: 'https://web.whatsapp.com' },
+        settings: { title: 'Configurações', url: 'https://example.com/configuracoes.html' }
+      };
+
+      if (apps[app]) {
+        appTitle.textContent = apps[app].title;
+        appContent.innerHTML = `<iframe src="${apps[app].url}" allowfullscreen></iframe>`;
+        appWindow.style.display = 'flex';
+      } else {
+        alert(`Abrir ${app.toUpperCase()} – Função personalizada em breve.`);
+      }
+    }
+
+    function fecharApp() {
+      document.getElementById('appWindow').style.display = 'none';
+    }
+  </script>
+</body>
+</html>
