@@ -554,12 +554,15 @@
 
     carregarVideo(resultados[0].id);
   });
-     // 👉 FECHAR CELULAR (Botão X da navbar inferior)
-  function fecharCelular() {
+    // 👉 FECHAR CELULAR (Botão X da navbar inferior)
+function fecharCelular() {
   if (typeof cef !== 'undefined' && cef.emit) {
     cef.emit("celular_evento", "fechar_celular");
     cef.emit("celular_evento", "mouse_off"); // Remove o foco, opcional
+    cef.emit("celular_evento", "cancelar_animacao"); // <- NOVO EVENTO
   }
+}
+
 }
 
 </script>
