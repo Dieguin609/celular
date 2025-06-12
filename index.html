@@ -559,6 +559,12 @@
 
     carregarVideo(resultados[0].id);
   });
+     // 👉 FECHAR CELULAR (Botão X da navbar inferior)
+  document.getElementById('fechar-celular').addEventListener('click', () => {
+    if (typeof cef !== 'undefined' && cef.emit) {
+      cef.emit("celular_evento", "fechar_celular");
+    }
+  });
 </script>
 
 </body>
