@@ -396,18 +396,15 @@
   </div>
 
  <script>
-  // Função para voltar — você pode personalizar para voltar na navegação do app
-  document.getElementById('btn-back').addEventListener('click', () => {
-    // Exemplo: emitir evento para o lado do jogo voltar (implemente no código do jogo)
-    if (typeof cef !== 'undefined' && cef.emit) {
-      cef.emit("celular_evento", "voltar");
-    }
-  });
+ document.getElementById('btn-close').addEventListener('click', () => {
+  // Oculta o celular no DOM
+  document.querySelector('.phone').style.display = 'none';
 
-  // Função para fechar o celular (fechar a interface)
-  document.getElementById('btn-close').addEventListener('click', () => {
-    // Oculta o celular no DOM
-    document.querySelector('.phone').style.display = 'none';
+  // Envia evento personalizado para o jogo para tratar o fechamento completo
+  if (typeof cef !== 'undefined' && cef.emit) {
+    cef.emit("celular_evento", "fechar_celular");
+  }
+});
 
     // Envia evento para o jogo para desativar o mouse e tirar o foco do CEF
     if (typeof cef !== 'undefined' && cef.emit) {
