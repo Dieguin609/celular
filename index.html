@@ -395,185 +395,200 @@
     </div>
   </div>
 
-  <script>
-    // Função para voltar — você pode personalizar para voltar na navegação do app
-document.getElementById('btn-back').addEventListener('click', () => {
-  // Aqui você pode colocar a ação de voltar no app — exemplo:
-  alert('Voltar pressionado (implemente a função de voltar)');
-});
-
-// Função para fechar o celular (fechar a interface)
-document.getElementById('btn-close').addEventListener('click', () => {
-  // Se quiser fechar a interface, pode esconder o .phone:
-  document.querySelector('.phone').style.display = 'none';
-  // Ou outra ação que feche o celular no seu contexto CEF.
-});
-
-   function ativarMouse() {
+ <script>
+  // Função para voltar — você pode personalizar para voltar na navegação do app
+  document.getElementById('btn-back').addEventListener('click', () => {
+    // Exemplo: emitir evento para o lado do jogo voltar (implemente no código do jogo)
     if (typeof cef !== 'undefined' && cef.emit) {
-        cef.emit("celular_evento", "mouse_on");
+      cef.emit("celular_evento", "voltar");
     }
-}
+  });
 
-function desativarMouse() {
+  // Função para fechar o celular (fechar a interface)
+  document.getElementById('btn-close').addEventListener('click', () => {
+    // Oculta o celular no DOM
+    document.querySelector('.phone').style.display = 'none';
+
+    // Envia evento para o jogo para desativar o mouse e tirar o foco do CEF
     if (typeof cef !== 'undefined' && cef.emit) {
-        cef.emit("celular_evento", "mouse_off");
+      cef.emit("celular_evento", "fechar");
+      cef.emit("celular_evento", "mouse_off");
+      cef.emit("celular_evento", "focus_off");
     }
-}
-    // Função para atualizar horário e data da tela de bloqueio
-    function atualizarLockscreen() {
-      const now = new Date();
-      const h = now.getHours().toString().padStart(2, '0');
-      const m = now.getMinutes().toString().padStart(2, '0');
-      const days = ['domingo', 'segunda-feira', 'terça-feira', 'quarta-feira', 'quinta-feira', 'sexta-feira', 'sábado'];
-      const months = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+  });
 
-      document.getElementById('lock-time').textContent = `${h}:${m}`;
-      document.getElementById('lock-date').textContent = `${days[now.getDay()]}, ${now.getDate()} de ${months[now.getMonth()]}`;
+  // Função para ativar mouse e foco no CEF (quando celular abrir)
+  function ativarMouse() {
+    if (typeof cef !== 'undefined' && cef.emit) {
+      cef.emit("celular_evento", "mouse_on");
+      cef.emit("celular_evento", "focus_on");
     }
+  }
 
-    // Atualiza a tela inicial relógio
-    function atualizarHomeClock() {
-      const now = new Date();
-      const h = now.getHours().toString().padStart(2, '0');
-      const m = now.getMinutes().toString().padStart(2, '0');
-      document.getElementById('home-clock-mini').textContent = `${h}:${m}`;
-      document.querySelector('#home-clock .top').textContent = h;
-      document.querySelector('#home-clock .bottom').textContent = m;
+  // Função para desativar mouse e foco no CEF (quando celular fechar)
+  function desativarMouse() {
+    if (typeof cef !== 'undefined' && cef.emit) {
+      cef.emit("celular_evento", "mouse_off");
+      cef.emit("celular_evento", "focus_off");
     }
+  }
 
-    // Inicialização da atualização do relógio
+  // Atualiza horário e data da tela de bloqueio
+  function atualizarLockscreen() {
+    const now = new Date();
+    const h = now.getHours().toString().padStart(2, '0');
+    const m = now.getMinutes().toString().padStart(2, '0');
+    const days = ['domingo', 'segunda-feira', 'terça-feira', 'quarta-feira', 'quinta-feira', 'sexta-feira', 'sábado'];
+    const months = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+
+    document.getElementById('lock-time').textContent = `${h}:${m}`;
+    document.getElementById('lock-date').textContent = `${days[now.getDay()]}, ${now.getDate()} de ${months[now.getMonth()]}`;
+  }
+
+  // Atualiza a tela inicial relógio
+  function atualizarHomeClock() {
+    const now = new Date();
+    const h = now.getHours().toString().padStart(2, '0');
+    const m = now.getMinutes().toString().padStart(2, '0');
+    document.getElementById('home-clock-mini').textContent = `${h}:${m}`;
+    document.querySelector('#home-clock .top').textContent = h;
+    document.querySelector('#home-clock .bottom').textContent = m;
+  }
+
+  // Inicializa atualização do relógio
+  atualizarLockscreen();
+  atualizarHomeClock();
+  setInterval(() => {
     atualizarLockscreen();
     atualizarHomeClock();
-    setInterval(() => {
-      atualizarLockscreen();
-      atualizarHomeClock();
-    }, 60000);
+  }, 60000);
 
-    // Transição da tela de bloqueio para a tela inicial
-    const lockscreen = document.getElementById('lockscreen');
-    const homescreen = document.getElementById('homescreen');
-    const youtubeApp = document.getElementById('youtube-app');
+  // Transição da tela de bloqueio para a tela inicial
+  const lockscreen = document.getElementById('lockscreen');
+  const homescreen = document.getElementById('homescreen');
+  const youtubeApp = document.getElementById('youtube-app');
 
-    lockscreen.addEventListener('click', () => {
-      lockscreen.style.display = 'none';
+  lockscreen.addEventListener('click', () => {
+    lockscreen.style.display = 'none';
+    homescreen.style.display = 'flex';
+    ativarMouse();  // ativa mouse e foco do CEF quando desbloqueia o celular
+  });
+
+  // Função para abrir apps - simplificado
+  function abrirApp(appName) {
+    if (appName === 'youtube') {
+      homescreen.style.display = 'none';
+      youtubeApp.style.display = 'flex';
+      carregarVideosPadrao();
+      ativarMouse();  // ativa mouse e foco ao abrir app
+    } else {
+      alert(`App "${appName}" ainda não está implementado.`);
+    }
+  }
+
+  // Função para fechar apps
+  function fecharApp(appName) {
+    if (appName === 'youtube') {
+      youtubeApp.style.display = 'none';
       homescreen.style.display = 'flex';
+      limparYoutube();
+      // Se quiser, pode manter mouse ligado ou desligar
+      ativarMouse(); // manter mouse ligado dentro da home
+    }
+  }
+
+  // Função para limpar conteúdo do YouTube app
+  function limparYoutube() {
+    document.getElementById('youtube-player').innerHTML = '';
+    document.getElementById('youtube-videos-list').innerHTML = '';
+    document.getElementById('yt-search-input').value = '';
+  }
+
+  // Dados de vídeos para demo
+  const videosDemo = [
+    {
+      id: 'dQw4w9WgXcQ',
+      title: 'Rick Astley - Never Gonna Give You Up',
+      channel: 'Rick Astley',
+      thumb: 'https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg'
+    },
+    {
+      id: 'kxopViU98Xo',
+      title: 'Nyan Cat [original]',
+      channel: 'Nyan Cat',
+      thumb: 'https://img.youtube.com/vi/kxopViU98Xo/hqdefault.jpg'
+    },
+    {
+      id: '3JZ_D3ELwOQ',
+      title: 'The Weeknd - Blinding Lights',
+      channel: 'The Weeknd',
+      thumb: 'https://img.youtube.com/vi/3JZ_D3ELwOQ/hqdefault.jpg'
+    }
+  ];
+
+  // Exibe vídeos recomendados
+  function carregarVideosPadrao() {
+    const list = document.getElementById('youtube-videos-list');
+    list.innerHTML = '';
+    videosDemo.forEach(video => {
+      const el = document.createElement('div');
+      el.className = 'video-item';
+      el.innerHTML = `
+        <div class="video-thumb" style="background-image:url('${video.thumb}')"></div>
+        <div class="video-info">
+          <div class="video-title">${video.title}</div>
+          <div class="video-channel">${video.channel}</div>
+        </div>
+      `;
+      el.onclick = () => {
+        carregarVideo(video.id);
+      };
+      list.appendChild(el);
     });
+    carregarVideo(videosDemo[0].id);
+  }
 
-    // Função para abrir apps - simplificado
-    function abrirApp(appName) {
-      if (appName === 'youtube') {
-        homescreen.style.display = 'none';
-        youtubeApp.style.display = 'flex';
-        carregarVideosPadrao();
-      } else {
-        alert(`App "${appName}" ainda não está implementado.`);
-      }
-    }
+  // Função para carregar vídeo no player
+  function carregarVideo(videoId) {
+    const player = document.getElementById('youtube-player');
+    player.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+  }
 
-    // Função para fechar apps
-    function fecharApp(appName) {
-      if (appName === 'youtube') {
-        youtubeApp.style.display = 'none';
-        homescreen.style.display = 'flex';
-        limparYoutube();
-      }
-    }
+  // Pesquisa fake no YouTube demo
+  document.getElementById('yt-search-btn').addEventListener('click', () => {
+    const query = document.getElementById('yt-search-input').value.trim();
+    if (!query) return alert('Digite algo para buscar no YouTube.');
 
-    // Função para limpar conteúdo do YouTube app
-    function limparYoutube() {
+    const resultados = videosDemo.filter(v => v.title.toLowerCase().includes(query.toLowerCase()));
+
+    const list = document.getElementById('youtube-videos-list');
+    list.innerHTML = '';
+
+    if (resultados.length === 0) {
+      list.innerHTML = '<p style="text-align:center; color:#888;">Nenhum vídeo encontrado.</p>';
       document.getElementById('youtube-player').innerHTML = '';
-      document.getElementById('youtube-videos-list').innerHTML = '';
-      document.getElementById('yt-search-input').value = '';
+      return;
     }
 
-    // Dados de vídeos para demo - substituir por API real se quiser
-    const videosDemo = [
-      {
-        id: 'dQw4w9WgXcQ',
-        title: 'Rick Astley - Never Gonna Give You Up',
-        channel: 'Rick Astley',
-        thumb: 'https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg'
-      },
-      {
-        id: 'kxopViU98Xo',
-        title: 'Nyan Cat [original]',
-        channel: 'Nyan Cat',
-        thumb: 'https://img.youtube.com/vi/kxopViU98Xo/hqdefault.jpg'
-      },
-      {
-        id: '3JZ_D3ELwOQ',
-        title: 'The Weeknd - Blinding Lights',
-        channel: 'The Weeknd',
-        thumb: 'https://img.youtube.com/vi/3JZ_D3ELwOQ/hqdefault.jpg'
-      }
-    ];
-
-    // Exibe vídeos recomendados
-    function carregarVideosPadrao() {
-      const list = document.getElementById('youtube-videos-list');
-      list.innerHTML = '';
-      videosDemo.forEach(video => {
-        const el = document.createElement('div');
-        el.className = 'video-item';
-        el.innerHTML = `
-          <div class="video-thumb" style="background-image:url('${video.thumb}')"></div>
-          <div class="video-info">
-            <div class="video-title">${video.title}</div>
-            <div class="video-channel">${video.channel}</div>
-          </div>
-        `;
-        el.onclick = () => {
-          carregarVideo(video.id);
-        };
-        list.appendChild(el);
-      });
-      // Carrega o primeiro vídeo automaticamente
-      carregarVideo(videosDemo[0].id);
-    }
-
-    // Função para carregar vídeo no player
-    function carregarVideo(videoId) {
-      const player = document.getElementById('youtube-player');
-      player.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
-    }
-
-    // Pesquisa fake - substitua pela API real do YouTube se desejar
-    document.getElementById('yt-search-btn').addEventListener('click', () => {
-      const query = document.getElementById('yt-search-input').value.trim();
-      if (!query) return alert('Digite algo para buscar no YouTube.');
-
-      // Simulação de pesquisa filtrando os vídeosDemo
-      const resultados = videosDemo.filter(v => v.title.toLowerCase().includes(query.toLowerCase()));
-
-      const list = document.getElementById('youtube-videos-list');
-      list.innerHTML = '';
-
-      if (resultados.length === 0) {
-        list.innerHTML = '<p style="text-align:center; color:#888;">Nenhum vídeo encontrado.</p>';
-        document.getElementById('youtube-player').innerHTML = '';
-        return;
-      }
-
-      resultados.forEach(video => {
-        const el = document.createElement('div');
-        el.className = 'video-item';
-        el.innerHTML = `
-          <div class="video-thumb" style="background-image:url('${video.thumb}')"></div>
-          <div class="video-info">
-            <div class="video-title">${video.title}</div>
-            <div class="video-channel">${video.channel}</div>
-          </div>
-        `;
-        el.onclick = () => {
-          carregarVideo(video.id);
-        };
-        list.appendChild(el);
-      });
-
-      carregarVideo(resultados[0].id);
+    resultados.forEach(video => {
+      const el = document.createElement('div');
+      el.className = 'video-item';
+      el.innerHTML = `
+        <div class="video-thumb" style="background-image:url('${video.thumb}')"></div>
+        <div class="video-info">
+          <div class="video-title">${video.title}</div>
+          <div class="video-channel">${video.channel}</div>
+        </div>
+      `;
+      el.onclick = () => {
+        carregarVideo(video.id);
+      };
+      list.appendChild(el);
     });
 
-  </script>
+    carregarVideo(resultados[0].id);
+  });
+</script>
+
 </body>
 </html>
