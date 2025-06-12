@@ -347,19 +347,6 @@
   </div>
 
   <script>
-    // Função chamada ao clicar no botão ou pressionar ESC
-function fecharHud() {
-    if (typeof cef !== "undefined" && cef.emit) {
-        cef.emit("fecharHud");
-    }
-}
-
-// Também fecha com a tecla ESC
-document.addEventListener("keydown", function(e) {
-    if (e.key === "Escape") {
-        fecharHud();
-    }
-});
     // Função para atualizar horário e data da tela de bloqueio
     function atualizarLockscreen() {
       const now = new Date();
