@@ -287,6 +287,8 @@
   </style>
 </head>
 <body>
+  <button onclick="ativarMouse()">Ativar Mouse</button>
+<button onclick="desativarMouse()">Desativar Mouse</button>
   <div class="phone">
     <!-- Tela de bloqueio -->
     <div id="lockscreen" class="lockscreen" tabindex="0">
@@ -347,14 +349,17 @@
   </div>
 
   <script>
-    document.addEventListener("keydown", function(e) {
-    if (e.key === "1") {
-        // Envia evento pro servidor se quiser
-        if (typeof cef !== "undefined" && cef.emit) {
-            cef.emit("celular_evento", "pressionou1");
-        }
+   function ativarMouse() {
+    if (typeof cef !== 'undefined' && cef.emit) {
+        cef.emit("celular_evento", "mouse_on");
     }
-});
+}
+
+function desativarMouse() {
+    if (typeof cef !== 'undefined' && cef.emit) {
+        cef.emit("celular_evento", "mouse_off");
+    }
+}
     // Função para atualizar horário e data da tela de bloqueio
     function atualizarLockscreen() {
       const now = new Date();
