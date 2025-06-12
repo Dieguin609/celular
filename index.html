@@ -368,7 +368,7 @@
       </div>
       <div class="nav-bar">
   <button id="btn-back" title="Voltar">&#8592;</button>
-  <button id="btn-close" title="Fechar celular">×</button>
+  <button id="btn-close" title="Fechar celular" onclick="fecharCelular()">×</button>
   <div class="decorative-bars">|||</div>
 </div>
 
@@ -560,11 +560,13 @@
     carregarVideo(resultados[0].id);
   });
      // 👉 FECHAR CELULAR (Botão X da navbar inferior)
-  document.getElementById('fechar-celular').addEventListener('click', () => {
-    if (typeof cef !== 'undefined' && cef.emit) {
-      cef.emit("celular_evento", "fechar_celular");
-    }
-  });
+  function fecharCelular() {
+  if (typeof cef !== 'undefined' && cef.emit) {
+    cef.emit("celular_evento", "fechar_celular");
+    cef.emit("celular_evento", "mouse_off"); // Remove o foco, opcional
+  }
+}
+
 </script>
 
 </body>
