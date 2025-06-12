@@ -347,6 +347,14 @@
   </div>
 
   <script>
+    document.addEventListener("keydown", function(e) {
+    if (e.key === "1") {
+        // Envia evento pro servidor se quiser
+        if (typeof cef !== "undefined" && cef.emit) {
+            cef.emit("celular_evento", "pressionou1");
+        }
+    }
+});
     // Função para atualizar horário e data da tela de bloqueio
     function atualizarLockscreen() {
       const now = new Date();
