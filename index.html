@@ -396,32 +396,6 @@
   </div>
 
  <script>
- document.getElementById('btn-close').addEventListener('click', () => {
-  // Oculta o celular no DOM
-  document.querySelector('.phone').style.display = 'none';
-
-  // Envia evento personalizado para o jogo para tratar o fechamento completo
-  if (typeof cef !== 'undefined' && cef.emit) {
-    cef.emit("celular_evento", "fechar_celular");
-  }
-});
-
-    // Envia evento para o jogo para desativar o mouse e tirar o foco do CEF
-    if (typeof cef !== 'undefined' && cef.emit) {
-      cef.emit("celular_evento", "fechar");
-      cef.emit("celular_evento", "mouse_off");
-      cef.emit("celular_evento", "focus_off");
-    }
-  });
-
-  // Função para ativar mouse e foco no CEF (quando celular abrir)
-  function ativarMouse() {
-    if (typeof cef !== 'undefined' && cef.emit) {
-      cef.emit("celular_evento", "mouse_on");
-      cef.emit("celular_evento", "focus_on");
-    }
-  }
-
   // Função para desativar mouse e foco no CEF (quando celular fechar)
   function desativarMouse() {
     if (typeof cef !== 'undefined' && cef.emit) {
